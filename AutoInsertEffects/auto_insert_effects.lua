@@ -178,6 +178,51 @@ local function check_fixtures()
 end
 
 -- *********************************************
+-- Function to find next empty effect slot
+-- *********************************************
+
+local function find_next_empty_slot(start_number)
+    local current = start_number;
+    local max_attempts = 1000; -- Prevent infinite loop
+    local attempts = 0;
+    
+    while attempts < max_attempts do
+        local effect_handle = gma.show.getobj.handle("Effect " .. current);
+        if not effect_handle then
+            -- Slot is empty
+            return current;
+        end
+        current = current + 1;
+        attempts = attempts + 1;
+    end
+    
+    -- If we couldn't find empty slot
+    return nil;
+end
+
+-- *********************************************
+-- Function to get start number from user
+-- *********************************************
+
+local function get_start_number()
+    local input = gma.textinput("Start Effect Number", "Enter starting effect number (will find empty slots):");
+    
+    if not input or input == "" then
+        gma.echo("No start number provided, using default: 1");
+        return 1;
+    end
+    
+    local start_num = tonumber(input);
+    
+    if not start_num or start_num < 1 then
+        gma.gui.msgbox("Invalid Input", "Please enter a valid positive number. Using default: 1");
+        return 1;
+    end
+    
+    return math.floor(start_num);
+end
+
+-- *********************************************
 -- Function to create a single effect
 -- *********************************************
 
@@ -235,15 +280,21 @@ local function insert_all_effects()
         return false;
     end
     
+    -- Get start number from user
+    local start_number = get_start_number();
+    gma.echo("Starting from effect number: " .. start_number);
+    gma.echo("");
+    
     local confirm = gma.gui.confirm(
         "Auto Insert Effects",
-        "This will create " .. #effects_config .. " sample effects (Effect 1-" .. #effects_config .. ").\n\n" ..
+        "This will create " .. #effects_config .. " sample effects starting from Effect " .. start_number .. ".\n\n" ..
         "All 23 available effect forms will be created:\n" ..
         "- Stomp, Release, Random, Pwm, Chase, Flat Low/High\n" ..
         "- Sin, Cos, Ramp Plus/Minus/50, Ramp\n" ..
         "- Phase 1/2/3, Bump, Swing\n" ..
         "- Circle, Sound, Flyout, Wave, Cross\n\n" ..
-        "Any existing effects will be overwritten.\n\n" ..
+        "Effects will be placed in EMPTY SLOTS only.\n" ..
+        "Existing effects will NOT be overwritten.\n\n" ..
         "Continue?"
     );
     
@@ -257,19 +308,36 @@ local function insert_all_effects()
     
     local success_count = 0;
     local failed_effects = {};
+    local used_slots = {};
+    local current_search_start = start_number;
     
     for i, config in ipairs(effects_config) do
         gma.gui.progress.set(progress, i - 1);
         
-        local success, err = pcall(function()
-            return create_effect(config, progress);
-        end);
+        -- Find next empty slot
+        local empty_slot = find_next_empty_slot(current_search_start);
         
-        if success and err then
-            success_count = success_count + 1;
+        if not empty_slot then
+            gma.echo("  ✗ Could not find empty slot for: " .. config.name);
+            table.insert(failed_effects, config.name .. " (no empty slot)");
         else
-            table.insert(failed_effects, config.name);
-            gma.echo("  ✗ Failed to create Effect " .. config.number .. ": " .. config.name);
+            -- Update config with the empty slot number
+            config.number = empty_slot;
+            table.insert(used_slots, empty_slot);
+            
+            -- Create the effect
+            local success, err = pcall(function()
+                return create_effect(config, progress);
+            end);
+            
+            if success and err then
+                success_count = success_count + 1;
+                -- Start searching from next number
+                current_search_start = empty_slot + 1;
+            else
+                table.insert(failed_effects, config.name);
+                gma.echo("  ✗ Failed to create Effect " .. config.number .. ": " .. config.name);
+            end
         end
     end
     
@@ -283,6 +351,7 @@ local function insert_all_effects()
     gma.echo("===========================================");
     gma.echo("Effect insertion completed!");
     gma.echo("Successfully created: " .. success_count .. " / " .. #effects_config .. " effects");
+    gma.echo("Effects placed in slots: " .. table.concat(used_slots, ", "));
     if #failed_effects > 0 then
         gma.echo("Failed effects: " .. table.concat(failed_effects, ", "));
     end
@@ -291,6 +360,7 @@ local function insert_all_effects()
     
     local summary = "Successfully created " .. success_count .. " / " .. #effects_config .. " effects!\n\n";
     summary = summary .. "All 23 effect forms have been created.\n";
+    summary = summary .. "Effects placed in slots:\n" .. table.concat(used_slots, ", ") .. "\n\n";
     summary = summary .. "Check your Effect Pool!\n\n";
     
     if #failed_effects > 0 then

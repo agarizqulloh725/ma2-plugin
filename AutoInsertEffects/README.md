@@ -2,15 +2,23 @@
 
 Plugin yang otomatis membuat 23 sample effects dengan SEMUA form yang tersedia di GrandMA2.
 
-## ✅ Version 2.0 - All Forms Edition
+## ✅ Version 3.0 - Dynamic Placement Edition
 
-**NEW:** Semua 23 effect forms tersedia!
-**FIXED:** Error "OBJECT DOES NOT EXIST" sudah diperbaiki
-**REMOVED:** Color effects dihapus, fokus pada dimmer effects saja
+**NEW:** Dynamic slot detection - tidak overwrite effect yang sudah ada!
+**NEW:** User input untuk start number
+**FIXED:** Pure Dimmer effects - tidak ada Pan/Tilt
+**IMPROVED:** Smart placement di slot kosong
 
-### Apa yang baru:
+### Apa yang baru di v3.0:
+- ✅ Input start number dari user
+- ✅ Automatic empty slot detection
+- ✅ Tidak overwrite effect yang sudah ada
+- ✅ Pure Dimmer effects (semua 23 effects)
+- ✅ Menampilkan slot yang digunakan
+- ✅ Smart error handling
+
+### Fitur dari versi sebelumnya:
 - ✅ 23 effects dengan semua form yang tersedia
-- ✅ Tidak ada lagi color effects
 - ✅ Command sequence yang benar (Presettype → At Form)
 - ✅ Error handling yang lebih baik
 - ✅ Sleep delays untuk stabilitas
@@ -119,7 +127,42 @@ gma.cmd("Store Effect 1 /nc");
 
 ## 💡 Quick Usage
 
-After plugin creates effects:
+### Cara Menggunakan Plugin:
+
+1. **Load Plugin:**
+   ```
+   Plugin "Auto Insert Effects"
+   ```
+
+2. **Input Start Number:**
+   - Dialog akan muncul meminta start number
+   - Contoh: ketik `10` untuk mulai dari Effect 10
+   - Tekan Enter atau kosongkan untuk default (Effect 1)
+
+3. **Konfirmasi:**
+   - Plugin akan menampilkan konfirmasi
+   - Klik "Yes" untuk melanjutkan
+
+4. **Hasil:**
+   - Plugin akan mencari slot kosong secara otomatis
+   - Effects akan ditempatkan di slot yang tersedia
+   - Tidak akan overwrite effect yang sudah ada
+
+### Contoh Skenario:
+
+**Skenario 1: Effect Pool Kosong**
+- Input start number: `1`
+- Hasil: Effects dibuat di slot 1-23
+
+**Skenario 2: Sudah Ada Effect 1-10**
+- Input start number: `1`
+- Hasil: Plugin skip slot 1-10, buat di slot 11-33
+
+**Skenario 3: Mulai dari Nomor Tertentu**
+- Input start number: `100`
+- Hasil: Effects dibuat di slot 100-122
+
+### Menggunakan Effects:
 
 ```
 # Apply effect to fixtures
@@ -164,7 +207,15 @@ Effect 22 At 100  (Wave)
 
 ## 📝 Version History
 
-### v2.0 (2024) - Current - All Forms Edition
+### v3.0 (2024) - Current - Dynamic Placement Edition
+- ✅ User input untuk start number
+- ✅ Dynamic empty slot detection
+- ✅ Tidak overwrite effect yang sudah ada
+- ✅ Pure Dimmer effects (fix Pan/Tilt issue)
+- ✅ Menampilkan slot yang digunakan
+- ✅ Smart placement algorithm
+
+### v2.0 (2024) - All Forms Edition
 - ✅ 23 effects dengan semua available forms
 - ✅ Removed color effects
 - ✅ Improved error handling
