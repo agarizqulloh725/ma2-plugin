@@ -59,30 +59,89 @@ local function create_smart_macro(macro_number, config)
     -- Store the macro
     gma.cmd("Store Macro 1." .. macro_number .. " /nc");
     
-    -- Line 1: Select Dimmer preset type
-    gma.cmd("Store Macro 1." .. macro_number .. ".1 /nc");
-    gma.cmd("Assign Macro 1." .. macro_number .. ".1 /cmd=\"Presettype Dimmer\"");
+    -- Multiple phase ranges for comprehensive effect variations
+    local line_num = 1
     
-    -- Line 2: Set form (using form number)
-    gma.cmd("Store Macro 1." .. macro_number .. ".2 /nc");
-    gma.cmd("Assign Macro 1." .. macro_number .. ".2 /cmd=\"At Form " .. config.form .. "\"");
+    -- Line 1: Presettype Dimmer
+    gma.cmd("Store Macro 1." .. macro_number .. "." .. line_num .. " /nc");
+    gma.cmd("Assign Macro 1." .. macro_number .. "." .. line_num .. " /cmd=\"Presettype Dimmer\"");
+    line_num = line_num + 1
     
-    -- Line 3: Set BPM
-    gma.cmd("Store Macro 1." .. macro_number .. ".3 /nc");
-    gma.cmd("Assign Macro 1." .. macro_number .. ".3 /cmd=\"At EffectBPM " .. config.bpm .. "\"");
+    -- Line 2: At Form
+    gma.cmd("Store Macro 1." .. macro_number .. "." .. line_num .. " /nc");
+    gma.cmd("Assign Macro 1." .. macro_number .. "." .. line_num .. " /cmd=\"At Form " .. config.form .. "\"");
+    line_num = line_num + 1
     
-    -- Line 4: Store effect (auto finds empty slot)
-    gma.cmd("Store Macro 1." .. macro_number .. ".4 /nc");
-    gma.cmd("Assign Macro 1." .. macro_number .. ".4 /cmd=\"Store Effect /nc\"");
+    -- Line 3: At EffectBPM
+    gma.cmd("Store Macro 1." .. macro_number .. "." .. line_num .. " /nc");
+    gma.cmd("Assign Macro 1." .. macro_number .. "." .. line_num .. " /cmd=\"At EffectBPM " .. config.bpm .. "\"");
+    line_num = line_num + 1
     
-    -- Line 5: Clear programmer
-    gma.cmd("Store Macro 1." .. macro_number .. ".5 /nc");
-    gma.cmd("Assign Macro 1." .. macro_number .. ".5 /cmd=\"ClearAll\"");
+    -- Comprehensive phase ranges for variety with labeling
+local phase_configs = {
+    {range = "0", suffix = "1"},
+    {range = "0 Thru 360", suffix = "2"},
+    {range = "0 Thru -360", suffix = "3"},
+    {range = "0 Thru 720", suffix = "4"},
+    {range = "0 Thru -720", suffix = "5"},
+    {range = "0 Thru 180", suffix = "6"},
+    {range = "0 Thru -180", suffix = "7"},
+    {range = "0 Thru 540", suffix = "10"},
+    {range = "0 Thru -540", suffix = "11"},
+    {range = "0 Thru 1080", suffix = "12"},
+    {range = "0 Thru -1080", suffix = "13"},
+    {range = "0 Thru 180 Thru 0", suffix = "14"},
+    {range = "0 Thru 360 Thru 0", suffix = "15"},
+    {range = "0 Thru 90 Thru 0", suffix = "16"},
+    {range = "0 Thru 270 Thru 0", suffix = "17"},
+    {range = "0 Thru 540 Thru 0", suffix = "18"},
+    {range = "0 Thru -180 Thru 0", suffix = "19"},
+    {range = "0 Thru -360 Thru 0", suffix = "20"},
+    {range = "-180 Thru 180", suffix = "21"},
+    {range = "180 Thru -180", suffix = "22"},
+    {range = "-90 Thru 90", suffix = "23"},
+    {range = "90 Thru -90", suffix = "24"},
+    {range = "0 Thru 45", suffix = "25"},
+    {range = "0 Thru -45", suffix = "26"},
+    {range = "-45 Thru 45", suffix = "27"},
+    {range = "45 Thru -45", suffix = "28"},
+    {range = "0 180 0 180 0 180", suffix = "29"},
+    {range = "0 Thru 360 Repeat 3", suffix = "30"},
+    {range = "0 Thru 360 Repeat 4", suffix = "31"},
+    {range = "0 Thru 720 Repeat 2", suffix = "32"},
+    {range = "-90 Thru 270", suffix = "33"},
+    {range = "0 180 90 270 45 315", suffix = "34"},
+    {range = "0 Thru 720 *2", suffix = "35"},
+    {range = "0 Thru 180 *0.5", suffix = "36"},
+}
+
+
+    
+    for i, phase_config in ipairs(phase_configs) do
+        -- At EffectPhase
+        gma.cmd("Store Macro 1." .. macro_number .. "." .. line_num .. " /nc");
+        gma.cmd("Assign Macro 1." .. macro_number .. "." .. line_num .. " /cmd=\"At EffectPhase " .. phase_config.range .. "\"");
+        line_num = line_num + 1
+        
+        -- Store Effect with label
+        gma.cmd("Store Macro 1." .. macro_number .. "." .. line_num .. " /nc");
+        gma.cmd("Assign Macro 1." .. macro_number .. "." .. line_num .. " /cmd=\"Store Effect /nc /o\"");
+        line_num = line_num + 1
+        
+        -- Label Effect with name + number
+        gma.cmd("Store Macro 1." .. macro_number .. "." .. line_num .. " /nc");
+        gma.cmd("Assign Macro 1." .. macro_number .. "." .. line_num .. " /cmd=\"Label Effect \\\"" .. config.name .. phase_config.suffix .. "\\\"\"");
+        line_num = line_num + 1
+    end
+    
+    -- Final: ClearAll
+    gma.cmd("Store Macro 1." .. macro_number .. "." .. line_num .. " /nc");
+    gma.cmd("Assign Macro 1." .. macro_number .. "." .. line_num .. " /cmd=\"ClearAll\"");
+    
+    gma.echo("  ✓ Smart macro " .. macro_number .. " created with 60 phase variations");
     
     -- Label the macro
     gma.cmd("Label Macro " .. macro_number .. " \"" .. config.name .. "\"");
-    
-    gma.echo("  ✓ Smart macro " .. macro_number .. " created");
     
     return true;
 end
