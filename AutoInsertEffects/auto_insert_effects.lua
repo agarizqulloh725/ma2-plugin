@@ -1,343 +1,180 @@
 -- *********************************************
--- Auto Insert Effects Plugin
--- Automatically inserts effects with ALL available forms
+-- Auto Insert Effects Plugin v4.0
+-- Creates macros only, effects created on macro click
 -- *********************************************
 
 local internal_name = select(1,...);
 local visible_name = select(2,...);
 
 gma.echo("===========================================");
-gma.echo("Auto Insert Effects Plugin Loaded");
-gma.echo("All 23 Effect Forms Available");
+gma.echo("Auto Insert Effects Plugin v4.0 Loaded");
+gma.echo("Smart Macros - Effects created on-demand");
 gma.echo("===========================================");
 
 -- *********************************************
 -- Configuration: All 23 available effect forms
--- Based on GrandMA2 Select Form dialog
 -- *********************************************
 
 local effects_config = {
-    -- Row 1: Basic Forms
-    {
-        number = 1,
-        name = "Stomp",
-        form = "Stomp",
-        bpm = 60
-    },
-    {
-        number = 2,
-        name = "Release",
-        form = "Release",
-        bpm = 60
-    },
-    {
-        number = 3,
-        name = "Random",
-        form = "Random",
-        bpm = 80
-    },
-    {
-        number = 4,
-        name = "Pwm",
-        form = "Pwm",
-        bpm = 90
-    },
-    {
-        number = 5,
-        name = "Chase",
-        form = "Chase",
-        bpm = 100
-    },
-    {
-        number = 6,
-        name = "Flat Low",
-        form = "Flat Low",
-        bpm = 60
-    },
+    -- Row 1 (kiri ke kanan)
+    {number = 1, name = "Stomp", form = 1, bpm = 60},
+    {number = 2, name = "Release", form = 2, bpm = 60},
+    {number = 3, name = "Random", form = 3, bpm = 80},
+    {number = 4, name = "Pwm", form = 4, bpm = 90},
+    {number = 5, name = "Chase", form = 5, bpm = 100},
+    {number = 6, name = "Flat Low", form = 6, bpm = 60},
     
-    -- Row 2: Advanced Forms
-    {
-        number = 7,
-        name = "Flat High",
-        form = "Flat High",
-        bpm = 60
-    },
-    {
-        number = 8,
-        name = "Sin",
-        form = "Sin",
-        bpm = 60
-    },
-    {
-        number = 9,
-        name = "Cos",
-        form = "Cos",
-        bpm = 60
-    },
-    {
-        number = 10,
-        name = "Ramp Plus",
-        form = "Ramp Plus",
-        bpm = 70
-    },
-    {
-        number = 11,
-        name = "Ramp Minus",
-        form = "Ramp Minus",
-        bpm = 70
-    },
-    {
-        number = 12,
-        name = "Ramp",
-        form = "Ramp",
-        bpm = 70
-    },
+    -- Row 2 (kiri ke kanan)
+    {number = 7, name = "Flat High", form = 7, bpm = 60},
+    {number = 8, name = "Sin", form = 8, bpm = 60},
+    {number = 9, name = "Cos", form = 9, bpm = 60},
+    {number = 10, name = "Ramp Plus", form = 10, bpm = 70},
+    {number = 11, name = "Ramp Minus", form = 11, bpm = 70},
+    {number = 12, name = "Ramp", form = 12, bpm = 70},
     
-    -- Row 3: Phase Forms
-    {
-        number = 13,
-        name = "Phase 1",
-        form = "Phase 1",
-        bpm = 60
-    },
-    {
-        number = 14,
-        name = "Phase 2",
-        form = "Phase 2",
-        bpm = 60
-    },
-    {
-        number = 15,
-        name = "Phase 3",
-        form = "Phase 3",
-        bpm = 60
-    },
-    {
-        number = 16,
-        name = "Bump",
-        form = "Bump",
-        bpm = 80
-    },
-    {
-        number = 17,
-        name = "Swing",
-        form = "Swing",
-        bpm = 50
-    },
-    {
-        number = 18,
-        name = "Ramp 50",
-        form = "Ramp 50",
-        bpm = 70
-    },
+    -- Row 3 (kiri ke kanan)
+    {number = 13, name = "Phase 1", form = 13, bpm = 60},
+    {number = 14, name = "Phase 2", form = 14, bpm = 60},
+    {number = 15, name = "Phase 3", form = 15, bpm = 60},
+    {number = 16, name = "Bump", form = 16, bpm = 80},
+    {number = 17, name = "Swing", form = 17, bpm = 50},
+    {number = 18, name = "Ramp 50", form = 18, bpm = 70},
     
-    -- Row 4: Special Forms
-    {
-        number = 19,
-        name = "Circle",
-        form = "Circle",
-        bpm = 40
-    },
-    {
-        number = 20,
-        name = "Sound",
-        form = "Sound",
-        bpm = 120
-    },
-    {
-        number = 21,
-        name = "Flyout",
-        form = "Flyout",
-        bpm = 60
-    },
-    {
-        number = 22,
-        name = "Wave",
-        form = "Wave",
-        bpm = 50
-    },
-    {
-        number = 23,
-        name = "Cross",
-        form = "Cross",
-        bpm = 60
-    }
+    -- Row 4 (kiri ke kanan)
+    {number = 19, name = "Circle", form = 19, bpm = 40},
+    {number = 20, name = "Sound", form = 20, bpm = 120},
+    {number = 21, name = "Flyout", form = 21, bpm = 60},
+    {number = 22, name = "Wave", form = 22, bpm = 50},
+    {number = 23, name = "Cross", form = 23, bpm = 60}
 };
 
 -- *********************************************
--- Function to check if fixtures exist
+-- Function to create smart macro
+-- Uses exact command sequence from reference
 -- *********************************************
 
-local function check_fixtures()
-    local fixture_handle = gma.show.getobj.handle("Fixture 1");
-    if not fixture_handle then
-        gma.gui.msgbox("Warning", "No fixtures found in show. Please patch fixtures first.");
-        return false;
-    end
-    return true;
-end
-
--- *********************************************
--- Function to find next empty effect slot
--- *********************************************
-
-local function find_next_empty_slot(start_number)
-    local current = start_number;
-    local max_attempts = 1000; -- Prevent infinite loop
-    local attempts = 0;
+local function create_smart_macro(macro_number, config)
+    gma.echo("Creating smart macro " .. macro_number .. ": " .. config.name);
     
-    while attempts < max_attempts do
-        local effect_handle = gma.show.getobj.handle("Effect " .. current);
-        if not effect_handle then
-            -- Slot is empty
-            return current;
-        end
-        current = current + 1;
-        attempts = attempts + 1;
-    end
-    
-    -- If we couldn't find empty slot
-    return nil;
-end
-
--- *********************************************
--- Function to get start number from user
--- *********************************************
-
-local function get_start_number()
-    local input = gma.textinput("Start Effect Number", "Enter starting effect number (will find empty slots):");
-    
-    if not input or input == "" then
-        gma.echo("No start number provided, using default: 1");
-        return 1;
-    end
-    
-    local start_num = tonumber(input);
-    
-    if not start_num or start_num < 1 then
-        gma.gui.msgbox("Invalid Input", "Please enter a valid positive number. Using default: 1");
-        return 1;
-    end
-    
-    return math.floor(start_num);
-end
-
--- *********************************************
--- Function to create a single effect
--- *********************************************
-
-local function create_effect(config, progress_handle)
-    gma.echo("Creating Effect " .. config.number .. ": " .. config.name);
-    
-    if progress_handle then
-        gma.gui.progress.settext(progress_handle, "Creating " .. config.name .. "...");
-    end
-    
-    -- Clear programmer
-    gma.cmd("ClearAll");
-    gma.sleep(0.1);
-    
-    -- Select all fixtures
-    gma.cmd("Fixture Thru");
-    gma.sleep(0.1);
-    
-    -- Select Dimmer preset type (this creates the attribute selection)
-    gma.cmd("Presettype \"Dimmer\"");
-    gma.sleep(0.1);
-    
-    -- Set form (attribute is now selected)
-    gma.cmd("At Form \"" .. config.form .. "\"");
-    gma.sleep(0.1);
-    
-    -- Set BPM
-    gma.cmd("At EffectBPM " .. config.bpm);
-    gma.sleep(0.1);
-    
-    -- Store the effect
-    gma.cmd("Store Effect " .. config.number .. " /nc");
-    gma.sleep(0.5);
-    
-    -- Label the effect
-    gma.cmd("Label Effect " .. config.number .. " \"" .. config.name .. "\"");
+    -- Store the macro
+    gma.cmd("Store Macro 1." .. macro_number .. " /nc");
     gma.sleep(0.2);
     
-    gma.echo("  ✓ Effect " .. config.number .. " created: " .. config.name);
+    -- Line 1: Clear programmer
+    gma.cmd("Store Macro 1." .. macro_number .. ".1 /nc");
+    gma.sleep(0.1);
+    gma.cmd("Assign Macro 1." .. macro_number .. ".1 /cmd=\"ClearAll\"");
+    gma.sleep(0.1);
+    
+    -- Line 2: Select all fixtures
+    gma.cmd("Store Macro 1." .. macro_number .. ".2 /nc");
+    gma.sleep(0.1);
+    gma.cmd("Assign Macro 1." .. macro_number .. ".2 /cmd=\"Fixture Thru\"");
+    gma.sleep(0.1);
+    
+    -- Line 3: Select Dimmer preset type
+    gma.cmd("Store Macro 1." .. macro_number .. ".3 /nc");
+    gma.sleep(0.1);
+    gma.cmd("Assign Macro 1." .. macro_number .. ".3 /cmd=\"Presettype Dimmer\"");
+    gma.sleep(0.1);
+    
+    -- Line 4: Set form (using form number)
+    gma.cmd("Store Macro 1." .. macro_number .. ".4 /nc");
+    gma.sleep(0.1);
+    gma.cmd("Assign Macro 1." .. macro_number .. ".4 /cmd=\"At Form " .. config.form .. "\"");
+    gma.sleep(0.1);
+    
+    -- Line 5: Set BPM
+    gma.cmd("Store Macro 1." .. macro_number .. ".5 /nc");
+    gma.sleep(0.1);
+    gma.cmd("Assign Macro 1." .. macro_number .. ".5 /cmd=\"At EffectBPM " .. config.bpm .. "\"");
+    gma.sleep(0.1);
+    
+    -- Line 6: Store effect (auto finds empty slot)
+    gma.cmd("Store Macro 1." .. macro_number .. ".6 /nc");
+    gma.sleep(0.1);
+    gma.cmd("Assign Macro 1." .. macro_number .. ".6 /cmd=\"Store Effect /nc\"");
+    gma.sleep(0.1);
+    
+    -- Line 7: Clear programmer again
+    gma.cmd("Store Macro 1." .. macro_number .. ".7 /nc");
+    gma.sleep(0.1);
+    gma.cmd("Assign Macro 1." .. macro_number .. ".7 /cmd=\"ClearAll\"");
+    gma.sleep(0.1);
+    
+    -- Line 8: Select fixtures again
+    gma.cmd("Store Macro 1." .. macro_number .. ".8 /nc");
+    gma.sleep(0.1);
+    gma.cmd("Assign Macro 1." .. macro_number .. ".8 /cmd=\"Fixture Thru\"");
+    gma.sleep(0.1);
+    
+    -- Line 9: Apply last created effect with AT 100
+    gma.cmd("Store Macro 1." .. macro_number .. ".9 /nc");
+    gma.sleep(0.1);
+    gma.cmd("Assign Macro 1." .. macro_number .. ".9 /cmd=\"Effect At 100\"");
+    gma.sleep(0.1);
+    
+    -- Label the macro
+    gma.cmd("Label Macro " .. macro_number .. " \"" .. config.name .. "\"");
+    gma.sleep(0.2);
+    
+    gma.echo("  ✓ Smart macro " .. macro_number .. " created");
     
     return true;
 end
 
 -- *********************************************
--- Main function to insert all effects
+-- Main function to create all macros
 -- *********************************************
 
-local function insert_all_effects()
+local function create_all_macros()
     gma.echo("");
-    gma.echo("Starting automatic effect insertion...");
-    gma.echo("Creating " .. #effects_config .. " effects with all available forms");
-    gma.echo("");
-    
-    if not check_fixtures() then
-        return false;
-    end
-    
-    -- Get start number from user
-    local start_number = get_start_number();
-    gma.echo("Starting from effect number: " .. start_number);
+    gma.echo("===========================================");
+    gma.echo("Creating Smart Macros...");
+    gma.echo("Total: " .. #effects_config .. " macros");
+    gma.echo("===========================================");
     gma.echo("");
     
     local confirm = gma.gui.confirm(
-        "Auto Insert Effects",
-        "This will create " .. #effects_config .. " sample effects starting from Effect " .. start_number .. ".\n\n" ..
-        "All 23 available effect forms will be created:\n" ..
-        "- Stomp, Release, Random, Pwm, Chase, Flat Low/High\n" ..
-        "- Sin, Cos, Ramp Plus/Minus/50, Ramp\n" ..
-        "- Phase 1/2/3, Bump, Swing\n" ..
-        "- Circle, Sound, Flyout, Wave, Cross\n\n" ..
-        "Effects will be placed in EMPTY SLOTS only.\n" ..
-        "Existing effects will NOT be overwritten.\n\n" ..
+        "Auto Insert Effects - Smart Macros",
+        "This will create " .. #effects_config .. " smart macros.\n\n" ..
+        "HOW IT WORKS:\n" ..
+        "1. Macros created immediately (NO effects yet)\n" ..
+        "2. When you CLICK a macro:\n" ..
+        "   - Effect is auto-created in Effect Pool\n" ..
+        "   - Effect is applied with AT 100 status\n" ..
+        "3. Each click creates NEW effect\n\n" ..
+        "All 23 effect forms:\n" ..
+        "Stomp, Release, Random, Pwm, Chase, Flat Low/High,\n" ..
+        "Sin, Cos, Ramp Plus/Minus/50, Ramp, Phase 1/2/3,\n" ..
+        "Bump, Swing, Circle, Sound, Flyout, Wave, Cross\n\n" ..
         "Continue?"
     );
     
     if not confirm then
-        gma.echo("Effect insertion cancelled by user.");
+        gma.echo("Macro creation cancelled by user.");
         return false;
     end
     
-    local progress = gma.gui.progress.start("Auto Insert Effects");
+    local progress = gma.gui.progress.start("Creating Smart Macros");
     gma.gui.progress.setrange(progress, 0, #effects_config);
     
     local success_count = 0;
-    local failed_effects = {};
-    local used_slots = {};
-    local current_search_start = start_number;
+    local failed_macros = {};
     
     for i, config in ipairs(effects_config) do
         gma.gui.progress.set(progress, i - 1);
+        gma.gui.progress.settext(progress, "Creating macro: " .. config.name);
         
-        -- Find next empty slot
-        local empty_slot = find_next_empty_slot(current_search_start);
+        local success, err = pcall(function()
+            return create_smart_macro(i, config);
+        end);
         
-        if not empty_slot then
-            gma.echo("  ✗ Could not find empty slot for: " .. config.name);
-            table.insert(failed_effects, config.name .. " (no empty slot)");
+        if success and err then
+            success_count = success_count + 1;
         else
-            -- Update config with the empty slot number
-            config.number = empty_slot;
-            table.insert(used_slots, empty_slot);
-            
-            -- Create the effect
-            local success, err = pcall(function()
-                return create_effect(config, progress);
-            end);
-            
-            if success and err then
-                success_count = success_count + 1;
-                -- Start searching from next number
-                current_search_start = empty_slot + 1;
-            else
-                table.insert(failed_effects, config.name);
-                gma.echo("  ✗ Failed to create Effect " .. config.number .. ": " .. config.name);
-            end
+            table.insert(failed_macros, config.name);
+            gma.echo("  ✗ Failed to create macro: " .. config.name);
         end
     end
     
@@ -349,26 +186,32 @@ local function insert_all_effects()
     
     gma.echo("");
     gma.echo("===========================================");
-    gma.echo("Effect insertion completed!");
-    gma.echo("Successfully created: " .. success_count .. " / " .. #effects_config .. " effects");
-    gma.echo("Effects placed in slots: " .. table.concat(used_slots, ", "));
-    if #failed_effects > 0 then
-        gma.echo("Failed effects: " .. table.concat(failed_effects, ", "));
+    gma.echo("Smart Macro creation completed!");
+    gma.echo("Successfully created: " .. success_count .. " / " .. #effects_config .. " macros");
+    if #failed_macros > 0 then
+        gma.echo("Failed macros: " .. table.concat(failed_macros, ", "));
     end
     gma.echo("===========================================");
     gma.echo("");
     
-    local summary = "Successfully created " .. success_count .. " / " .. #effects_config .. " effects!\n\n";
-    summary = summary .. "All 23 effect forms have been created.\n";
-    summary = summary .. "Effects placed in slots:\n" .. table.concat(used_slots, ", ") .. "\n\n";
-    summary = summary .. "Check your Effect Pool!\n\n";
+    local summary = "✅ SMART MACROS CREATED: " .. success_count .. " / " .. #effects_config .. "\n\n";
+    summary = summary .. "HOW TO USE:\n";
+    summary = summary .. "1. Go to Macro Pool\n";
+    summary = summary .. "2. Click any macro button (1-23)\n";
+    summary = summary .. "3. Effect will be auto-created in Effect Pool\n";
+    summary = summary .. "4. Effect applied with AT 100 status\n\n";
+    summary = summary .. "Each macro uses exact command sequence:\n";
+    summary = summary .. "ClearAll → Fixture Thru → Presettype Dimmer →\n";
+    summary = summary .. "At Form → At EffectBPM → Store Effect →\n";
+    summary = summary .. "ClearAll → Fixture Thru → Effect At 100\n\n";
+    summary = summary .. "Effects created on-demand with AT status!";
     
-    if #failed_effects > 0 then
-        summary = summary .. "Note: Some effects may have failed:\n";
-        summary = summary .. table.concat(failed_effects, ", ");
+    if #failed_macros > 0 then
+        summary = summary .. "\n\n⚠️ Some macros failed:\n";
+        summary = summary .. table.concat(failed_macros, ", ");
     end
     
-    gma.gui.msgbox("Auto Insert Effects - Complete", summary);
+    gma.gui.msgbox("Smart Macros - Complete", summary);
     
     return true;
 end
@@ -380,7 +223,7 @@ end
 function Start()
     gma.echo("Starting Auto Insert Effects plugin...");
     gma.sleep(0.2);
-    insert_all_effects();
+    create_all_macros();
 end
 
 -- *********************************************
