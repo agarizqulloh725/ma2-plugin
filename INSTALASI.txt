@@ -1,0 +1,83 @@
+================================================================================
+AUTO INSERT EFFECTS PLUGIN - PANDUAN INSTALASI CEPAT
+================================================================================
+
+LANGKAH INSTALASI:
+
+1. File yang Dibutuhkan:
+   ✓ auto_insert_effects.lua
+   ✓ auto_insert_effects.xml
+
+2. Copy kedua file ke folder plugins GrandMA2:
+   C:/ProgramData/MA Lighting Technologies/grandma/gma2_V_3.9.61/plugins/
+
+3. Buka GrandMA2 Console
+
+4. Pastikan ada minimal 1 fixture yang sudah di-patch
+
+5. Load plugin dengan command:
+   Plugin "Auto Insert Effects"
+
+6. Klik "Yes" pada dialog konfirmasi
+
+7. Tunggu proses selesai (akan muncul progress bar)
+
+8. Selesai! Check Effect Pool untuk melihat 5 effect baru
+
+================================================================================
+
+EFFECTS YANG DIBUAT:
+
+Effect 1: Dimmer Sine    (60 BPM)  - Gelombang sinus halus
+Effect 2: Dimmer Ramp    (80 BPM)  - Ramp naik linear
+Effect 3: Dimmer Saw     (100 BPM) - Gigi gergaji
+Effect 4: Dimmer Random  (120 BPM) - Acak
+Effect 5: Dimmer Square  (90 BPM)  - Gelombang kotak
+
+================================================================================
+
+CARA MENGGUNAKAN:
+
+Contoh 1 - Apply effect ke fixtures:
+  Fixture 1 Thru 10
+  Effect 1 At 100
+
+Contoh 2 - Store effect ke cue:
+  Fixture 1 Thru 10
+  Effect 2 At 100
+  Store Cue 1
+
+Contoh 3 - Dari Effect Pool:
+  - Buka Effect Pool window
+  - Drag effect ke fixtures atau executors
+
+================================================================================
+
+TROUBLESHOOTING:
+
+Q: Plugin tidak jalan?
+A: - Check file ada di folder plugins yang benar
+   - Check System Monitor untuk error
+   - Pastikan ada fixtures yang sudah di-patch
+
+Q: Effects tidak muncul?
+A: - Buka Effect Pool window
+   - Refresh dengan F5
+   - Check System Monitor untuk error
+
+Q: Mau ubah effects yang dibuat?
+A: Edit file auto_insert_effects.lua bagian "effects_config"
+
+================================================================================
+
+CATATAN PENTING:
+
+⚠ Plugin akan OVERWRITE Effect 1-5 jika sudah ada
+⚠ Selalu BACKUP show sebelum install plugin baru
+⚠ Plugin otomatis jalan saat di-load (execute_on_load="1")
+
+================================================================================
+
+Untuk dokumentasi lengkap, baca: README_AUTO_INSERT_EFFECTS.md
+
+================================================================================

@@ -1,0 +1,181 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   AUTO INSERT EFFECTS PLUGIN - QUICK REFERENCE               ║
+║                              GrandMA2 Plugin                                 ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ INSTALASI CEPAT                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+1. Copy files ke: C:/ProgramData/MA Lighting Technologies/grandma/gma2_V_3.9.61/plugins/
+2. Buka GrandMA2
+3. Command: Plugin "Auto Insert Effects"
+4. Klik Yes
+5. Done!
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ VERSI BASIC - 5 EFFECTS                                                      │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Effect 1: Dimmer Sine    (60 BPM)  │ Smooth sine wave
+Effect 2: Dimmer Ramp    (80 BPM)  │ Linear ramp up
+Effect 3: Dimmer Saw     (100 BPM) │ Sawtooth wave
+Effect 4: Dimmer Random  (120 BPM) │ Random changes
+Effect 5: Dimmer Square  (90 BPM)  │ Square wave
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ VERSI ADVANCED - 10 EFFECTS                                                  │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+DIMMER:
+Effect 1-8: Various dimmer effects (slow/fast sine, ramp, saw, random, etc)
+
+COLOR:
+Effect 9:  RGB Rainbow   (30 BPM)  │ Rainbow color effect
+Effect 10: RGB Strobe    (180 BPM) │ Color strobe effect
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ COMMAND CHEAT SHEET                                                          │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+APPLY EFFECT:
+  Fixture 1 Thru 10
+  Effect 1 At 100
+
+STORE TO CUE:
+  Fixture 1 Thru 10
+  Effect 1 At 100
+  Store Cue 1
+
+ASSIGN TO EXECUTOR:
+  Assign Effect 1 At Executor 1.1
+
+ADJUST SPEED:
+  EffectRate 200        (2x faster)
+  EffectRate 50         (2x slower)
+
+ADJUST WIDTH:
+  EffectWidth 50        (50% width)
+  EffectWidth 200       (200% width)
+
+PHASE OFFSET:
+  Fixture 1 Thru 10
+  Effect 1 At 100
+  EffectPhase 0 Thru 360
+
+CONTROL:
+  Pause Effect 1        (Pause)
+  Toggle Effect 1       (Toggle on/off)
+  Effect 1 Off          (Turn off)
+  Effect 1 On           (Turn on)
+
+MANAGE:
+  Delete Effect 1       (Delete)
+  Copy Effect 1 At 11   (Copy)
+  Label Effect 1 "Name" (Rename)
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ KEYBOARD SHORTCUTS                                                           │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+F5          Refresh windows
+Ctrl+Z      Undo
+Ctrl+Y      Redo
+Esc         Clear selection
+. (dot)     Thru
++           Plus
+-           Minus
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TROUBLESHOOTING                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Plugin tidak jalan?
+  → Check files di folder plugins
+  → Check System Monitor untuk error
+  → Pastikan ada fixtures yang di-patch
+
+Effects tidak muncul?
+  → Refresh Effect Pool (F5)
+  → Check System Monitor
+  → Manual test: Store Effect 1
+
+Effects tidak bekerja?
+  → Check fixtures support preset type
+  → Check DMX output aktif
+  → Test: Fixture 1 At 100
+
+Color effects tidak bekerja?
+  → Check fixtures support RGB/CMY
+  → Gunakan dimmer effects saja
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TIPS & TRICKS                                                                │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+✓ Backup show sebelum install plugin
+✓ Test di show kosong dulu
+✓ Combine multiple effects untuk hasil menarik
+✓ Gunakan fade time untuk smooth transitions
+✓ Experiment dengan phase offset untuk wave effects
+✓ Save show setelah create effects
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ FILES                                                                        │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+BASIC VERSION:
+  auto_insert_effects.lua          (Main plugin)
+  auto_insert_effects.xml          (Metadata)
+
+ADVANCED VERSION:
+  auto_insert_effects_advanced.lua (Advanced plugin)
+  auto_insert_effects_advanced.xml (Metadata)
+
+DOCUMENTATION:
+  README_AUTO_INSERT_EFFECTS.md    (English docs)
+  PANDUAN_LENGKAP.md               (Indonesian full guide)
+  INSTALASI.txt                    (Quick install guide)
+  QUICK_REFERENCE.txt              (This file)
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ CUSTOMIZATION                                                                │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Edit effects_config di file .lua:
+
+{
+    number = 1,              -- Effect number (1-999)
+    name = "My Effect",      -- Effect name
+    preset_type = "Dimmer",  -- Dimmer/Color/Position
+    form = "Sine",           -- Sine/Ramp/Saw/Random/Square
+    bpm = 60,                -- Speed (1-1000 BPM)
+    width = 100,             -- Width (0-200%)
+    phase = 0,               -- Phase (0-360)
+    blocks = 1,              -- Blocks for Step form
+}
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ AVAILABLE FORMS                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Sine     │ Smooth sine wave
+Ramp     │ Linear ramp up
+Saw      │ Sawtooth wave
+Square   │ Square wave (on/off)
+Random   │ Random values
+Pulse    │ Short pulses
+Step     │ Step-based (use with blocks)
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ SUPPORT                                                                      │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+Documentation: Baca PANDUAN_LENGKAP.md untuk detail lengkap
+System Monitor: Menu > Windows > System Monitor (untuk error logs)
+GrandMA2 Manual: Help > Manual di console
+Forum: https://forum.malighting.com
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                        Version 1.0 - BLACKBOXAI 2024                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
