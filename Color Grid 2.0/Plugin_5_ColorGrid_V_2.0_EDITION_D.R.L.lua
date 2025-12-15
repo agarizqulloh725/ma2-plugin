@@ -31,7 +31,7 @@ end
 function images()
    ia=ga*12+12
    cmd('selectDrive 1')
-   inu=tonumber(text('SELECIONE AS IMAGENS','O NUMERO DAS IMAGENS É, '..ia..' IMAGENS SERÁ ARMAZENADA!'))
+   inu=tonumber(text('PILIH GAMBAR','JUMLAH GAMBAR ADALAH '..ia..' GAMBAR AKAN DISIMPAN!'))
    if inu~=nil then
    imfilst=inu
    viewimage=inu+32 
@@ -18719,11 +18719,11 @@ fileXML:write(xmltext)
      os.remove(image.fullpathXML)  
       
      
-presets()
+   presets()
    else
-   con('Invalid Value!','Input must be a number')
+   con('Nilai Tidak Valid!','Input harus berupa angka')
    images()
-   end 
+   end
 end
 
 function presets()
@@ -18731,7 +18731,7 @@ function presets()
    local g=1
    local col=1
    local pn=100
-   if con('ATENÇÃO! ATTENTION! ','AS PREDEFINIÇÕES DE CORES DE 100 A 112 SERAM EXCLUIDAS') then
+   if con('PERHATIAN!','PRESET WARNA DARI 100 SAMPAI 112 AKAN DIHAPUS') then
       cmd('Delete preset 4.100 thru 4.112/ nc')
       for ga=1,ga,1 do
          for col=1,4,1 do
@@ -18786,9 +18786,9 @@ function sequencees()
    local g=1   
    local gam=ga-1
    local x=1
-   if con('ATENÇÃO! ATTENTION!','VOCÊ DEVE ESCOLHER UM EXECUTOR BULTTON VAZIO PARA AS SEQUENCIAS DE CORES. \n DESTE '..gam..' OS EXECUTORES SERAM ARMAZENADOS.') then
-      page=tonumber(text('PAGINA PARA AS SEQUENCIAS','DIGITE O NUMERO DA PAGINA PARA SEQUENCIAS'))
-      local startseq=tonumber(text('QUAL EXECUTOR OU BULTTON','EXEMPLO. 101 '))
+   if con('PERHATIAN!','ANDA HARUS MEMILIH EXECUTOR BUTTON KOSONG UNTUK SEQUENCE WARNA. \n DARI '..gam..' EXECUTOR AKAN DISIMPAN.') then
+      page=tonumber(text('HALAMAN UNTUK SEQUENCE','MASUKKAN NOMOR HALAMAN UNTUK SEQUENCE'))
+      local startseq=tonumber(text('EXECUTOR ATAU BUTTON MANA','CONTOH: 101 '))
       seq=startseq
       fseq=seq
       maseq=seq
@@ -18819,7 +18819,7 @@ function sequencees()
          
       colormacros() 
       else
-        if con('Invalid Value!','Input must be a number') then
+        if con('Nilai Tidak Valid!','Input harus berupa angka') then
          sequencees()
         else
            return
@@ -18839,8 +18839,8 @@ function colormacros()
    local maimsta=maimst 
    gan=ga*4
    local macroanzahl=ga*12 
-   if con('ATENÇÃO! ATTENTION!','AGORA VOCE DEVE ESCOLHER UM NUMERO INICIAL DAS MACROS \n ONDE '..ian ..'MACROS SERAM ARMAZENADAS') then
-      macrostart=tonumber(text('ATENÇÃO! ATTENTION!','QUAL O NUMERO DA MACRO. EXEMPLO DA MACRO E 400'))
+   if con('PERHATIAN!','SEKARANG ANDA HARUS MEMILIH NOMOR AWAL MACRO \n DIMANA '..ian ..' MACRO AKAN DISIMPAN') then
+      macrostart=tonumber(text('PERHATIAN!','BERAPA NOMOR MACRO. CONTOH MACRO ADALAH 400'))
       local almaimst=imfilst+gama--first macro number for group "All"
       local almaimst2=almaimst        
       if macrostart~=nil then
@@ -18938,7 +18938,7 @@ seq=seq-1
              
             labelmacros() 
             else
-            if con('INVALID VALUE','Value must be a number!') then
+            if con('NILAI TIDAK VALID','Nilai harus berupa angka!') then
                colormacros()
             else
                return
@@ -19049,7 +19049,7 @@ xmltext=[[<?xml version="1.0" encoding="utf-8"?>
         </LayoutData>
     </Group>
 </MA>]]
-   ln=tonumber(text('SEU LAYOU VIEW ','ESCOLHA UMA JANELA PRA SEU LAYOUT'))
+   ln=tonumber(text('TAMPILAN LAYOUT ANDA','PILIH JENDELA UNTUK LAYOUT ANDA'))
    if ln~=nil then
 view={}
             view.name = 'tempfile_createview'
@@ -19062,7 +19062,7 @@ view={}
             os.remove(view.fullpathXML)   
              
    else
-      if con('INVALID VALUE!','Value must be a number!') then
+      if con('NILAI TIDAK VALID!','Nilai harus berupa angka!') then
          assigntoview()
       else
         return
