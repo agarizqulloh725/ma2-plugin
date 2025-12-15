@@ -1,0 +1,266 @@
+================================================================================
+AUTO INSERT EFFECTS SHAPE PLUGIN - PANDUAN INSTALASI CEPAT
+================================================================================
+
+Plugin untuk GrandMA2 yang membuat 12 macros untuk Pan/Tilt shape effects
+dengan konfigurasi predefined (PT Circle, Pan Only, Tilt Only)
+
+================================================================================
+LANGKAH INSTALASI
+================================================================================
+
+1. COPY FILES
+   -----------
+   Copy folder "AutoInsertEffectsShape" ke:
+   
+   C:/ProgramData/MA Lighting Technologies/grandma/gma2_V_3.9.61/plugins/
+   
+   Struktur folder harus seperti ini:
+   plugins/
+   └── AutoInsertEffectsShape/
+       ├── auto_insert_effects_shape.lua
+       ├── auto_insert_effects_shape.xml
+       ├── README.md
+       └── INSTALASI.txt
+
+2. LOAD PLUGIN
+   -----------
+   Di GrandMA2 console, ketik:
+   
+   Plugin "Auto Insert Effects Shape"
+   
+   Atau gunakan command line:
+   
+   Plugin "AutoInsertEffectsShape/auto_insert_effects_shape"
+
+3. KONFIRMASI
+   ----------
+   - Dialog konfirmasi akan muncul
+   - Klik "Yes" untuk create 12 macros
+   - Wait sampai progress bar selesai
+   - Dialog "Complete" akan muncul
+
+4. VERIFIKASI
+   ----------
+   - Buka Macro Pool
+   - Check Macro 1-12 sudah ada
+   - Labels: fx Circle 1-4, fx Pan Sym/NonSym 1-2, fx Tilt Sym/NonSym 1-2
+
+================================================================================
+CARA MENGGUNAKAN
+================================================================================
+
+BASIC USAGE:
+-----------
+1. Select fixtures (moving heads dengan Pan/Tilt)
+2. Buka Macro Pool
+3. Click macro yang diinginkan (1-12)
+4. Effect auto-created dan applied!
+
+MACRO LAYOUT:
+------------
+Macro 1-4:   PT Circle Effects (Pan + Tilt kombinasi)
+Macro 5-8:   Pan Only Effects (horizontal movement)
+Macro 9-12:  Tilt Only Effects (vertical movement)
+
+CONTOH:
+------
+- Click Macro 1 → fx Circle 1 (small circle, phase 0-90)
+- Click Macro 2 → fx Circle 2 (wide circle, phase 0-90)
+- Click Macro 5 → fx Pan Sym 1 (symmetric pan sweep)
+- Click Macro 9 → fx Tilt Sym 1 (symmetric tilt sweep)
+
+================================================================================
+EFFECT DETAILS
+================================================================================
+
+PT CIRCLE EFFECTS (Macro 1-4):
+------------------------------
+Macro 1: fx Circle 1
+  - Pan Sin 8 + Tilt Cos 9
+  - Phase: 0 Thru 90
+  - Wing: (-2,2)
+  - Small, smooth circle
+
+Macro 2: fx Circle 2
+  - Pan Sin 8 + Tilt Cos 9
+  - Phase: 0 Thru 90
+  - Wing: (-4,4)
+  - Wide, large circle
+
+Macro 3: fx Circle 3
+  - Pan Sin 8 + Tilt Cos 9
+  - Phase: 0 Thru 360
+  - Wing: (-2,2)
+  - Full circle rotation
+
+Macro 4: fx Circle 4
+  - Pan Sin 8 + Tilt Cos 9
+  - Phase: 90
+  - Wing: (-2,2)
+  - Circle with 90° offset
+
+PAN ONLY EFFECTS (Macro 5-8):
+-----------------------------
+Macro 5: fx Pan Sym 1 (SYMMETRIC)
+  - Form: Sin 8
+  - Phase: 0 Thru 90
+  - Wing: (-2,2)
+  - Subtle horizontal sweep
+
+Macro 6: fx Pan Sym 2 (SYMMETRIC)
+  - Form: Sin 8
+  - Phase: 0 Thru 180
+  - Wing: (-3,3)
+  - Medium horizontal sweep
+
+Macro 7: fx Pan NonSym 1 (NON-SYMMETRIC)
+  - Form: Sin 8
+  - Phase: 0 Thru 360
+  - Wing: (-2,2)
+  - Full horizontal rotation
+
+Macro 8: fx Pan NonSym 2 (NON-SYMMETRIC)
+  - Form: Ramp Plus 10
+  - Phase: 0 Thru 180
+  - Wing: (-4,4)
+  - Wide horizontal ramp
+
+TILT ONLY EFFECTS (Macro 9-12):
+-------------------------------
+Macro 9: fx Tilt Sym 1 (SYMMETRIC)
+  - Form: Cos 9
+  - Phase: 0 Thru 90
+  - Wing: (-2,2)
+  - Subtle vertical sweep
+
+Macro 10: fx Tilt Sym 2 (SYMMETRIC)
+  - Form: Cos 9
+  - Phase: 0 Thru 180
+  - Wing: (-3,3)
+  - Medium vertical sweep
+
+Macro 11: fx Tilt NonSym 1 (NON-SYMMETRIC)
+  - Form: Cos 9
+  - Phase: 0 Thru 360
+  - Wing: (-2,2)
+  - Full vertical rotation
+
+Macro 12: fx Tilt NonSym 2 (NON-SYMMETRIC)
+  - Form: Ramp Plus 10
+  - Phase: 0 Thru 180
+  - Wing: (-4,4)
+  - Wide vertical ramp
+
+================================================================================
+REQUIREMENTS
+================================================================================
+
+- GrandMA2 v3.9.61 or higher
+- Moving head fixtures dengan Pan/Tilt attributes
+- Minimal 1 fixture sudah di-patch
+- Fixtures harus support Pan dan/atau Tilt
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+PROBLEM: Plugin tidak load
+SOLUTION: 
+  - Check file path benar
+  - Check System Monitor untuk error
+  - Verify files tidak corrupt
+
+PROBLEM: Macros tidak muncul
+SOLUTION:
+  - Refresh Macro Pool (F5)
+  - Re-load plugin
+  - Check System Monitor
+
+PROBLEM: Effect tidak bergerak
+SOLUTION:
+  - Verify fixtures support Pan/Tilt
+  - Check DMX output
+  - Check BPM rate (mungkin terlalu lambat)
+  - Verify effect applied ke fixtures yang benar
+
+PROBLEM: Circle tidak sempurna
+SOLUTION:
+  - Check fixture calibration
+  - Adjust wing values
+  - Verify Pan/Tilt range fixtures
+
+PROBLEM: Symmetric effect tidak simetris
+SOLUTION:
+  - Check fixture numbering
+  - Verify fixtures dalam group yang sama
+  - Check phase distribution
+
+================================================================================
+TIPS & TRICKS
+================================================================================
+
+TIP 1: Kombinasi Effects
+  - Layer multiple effects untuk gerakan kompleks
+  - Combine Circle + Pan untuk variasi
+  - Adjust BPM untuk sinkronisasi
+
+TIP 2: Wing Values
+  - Wing kecil (-2,2) = tight pattern
+  - Wing besar (-4,4) = wide spread
+  - Experiment dengan values berbeda
+
+TIP 3: Phase Ranges
+  - 0-90 = subtle movement
+  - 0-180 = balanced movement
+  - 0-360 = full rotation
+
+TIP 4: BPM Adjustment
+  - Slow (30-40) = smooth, elegant
+  - Medium (50-70) = balanced
+  - Fast (80-120) = energetic
+
+TIP 5: Symmetric vs Non-Symmetric
+  - Symmetric = balanced look
+  - Non-Symmetric = dynamic look
+  - Mix keduanya untuk variety
+
+================================================================================
+QUICK REFERENCE
+================================================================================
+
+LOAD PLUGIN:
+  Plugin "Auto Insert Effects Shape"
+
+RELOAD PLUGIN:
+  Plugin "Auto Insert Effects Shape"
+
+CHECK MACROS:
+  - Open Macro Pool
+  - Look for Macro 1-12
+  - Labels should show effect names
+
+USE EFFECT:
+  1. Select fixtures
+  2. Click macro button
+  3. Effect auto-created!
+
+MODIFY EFFECT:
+  - Edit effect in Effect Pool
+  - Adjust BPM, Phase, Wing as needed
+  - Store changes
+
+================================================================================
+SUPPORT
+================================================================================
+
+Untuk dokumentasi lengkap, baca: README.md
+Untuk tracking progress, baca: TODO.md
+
+Developer: BLACKBOXAI
+Platform: GrandMA2 v3.9.61+
+Version: 1.0
+
+================================================================================
+SELAMAT MENGGUNAKAN! 🎭✨
+================================================================================
